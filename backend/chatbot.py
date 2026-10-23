@@ -30,7 +30,7 @@ from github_utils import (
 router = APIRouter(prefix="/chatbot", tags=["chatbot"])
 
 _GROQ_KEY = os.getenv("GROQ_API_KEY")
-_MODEL    = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
+_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-20b")
 
 _README_CAP  = 3000
 _RELATED_CAP = 1500
@@ -69,7 +69,8 @@ def _groq_chat(messages: list[dict], json_mode: bool = False, max_tokens: int = 
         "model": _MODEL,
         "messages": messages,
         "temperature": 0.3,
-        "max_tokens": max_tokens,
+        "max_tokens": max_tokens + 500,
+        "reasoning_effort": "low",
     }
     if json_mode:
         kwargs["response_format"] = {"type": "json_object"}
